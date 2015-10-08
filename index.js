@@ -29,35 +29,51 @@ function generateDimArray( dimlenght, nrOfTilesInDim ) {
 }
 
 
-function generateExtendedColorArray( desiredColors, nrOfTiles){
+function generateExtendedColorArray( desiredColors, columns, rows, sameColorFollowAllow){
     var extColors = [];
-    for( var i = 0; i < nrOfTiles; i++ ) {
-        var index = Math.floor( Math.random() * desiredColors.length );
-        extColors.push( desiredColors[index]);
+    var nrOfTiles = columns * rows;
+    var index;
+
+    if( sameColorFollowAllow ) {
+        for( var i = 0; i < nrOfTiles; i++ ) {
+            index = Math.floor( Math.random() * desiredColors.length );
+            extColors.push( desiredColors[index]);
+        }
+    }else{
+        var indexTileLeft = -667;
+        var columnPos;
+        var indicesTilesRowAbove = new Array(columns);
+        while( extColors.length < nrOfTiles ){
+            columnPos = extColors.length % columns;
+            index = Math.floor( Math.random() * desiredColors.length );
+            if( index != indexTileLeft && index != indicesTilesRowAbove[columnPos]) {
+                indexTileLeft = index;
+                indicesTilesRowAbove[columnPos] = index;
+                extColors.push( desiredColors[index]);
+            }
+        }
     }
+
     return extColors;
 }
 
 
-randomJPEG.createBufferForJPEG = function( selectedColors, xs, ys ) {
+randomJPEG.createBuffer = function( selectedColors, xs, ys ) {
     var width = xs[xs.length - 1];
     var height = ys[ys.length - 1];
     var fieldsPerPixel = 4;
     var buffer = new Buffer( width * height * fieldsPerPixel);
     var PosPixelBuffer = 0;
-    var pixelNr = 0;
     var currentTile = 0;
     for( var i = 0; i < (ys.length - 1); i++) {
         for( var currentY = ys[i]; currentY < ys[i + 1]; currentY++){
             currentTile = i * (xs.length - 1);
             for( var k = 0; k < (xs.length - 1); k++){
                 for( var currentX = xs[k]; currentX < xs[k + 1]; currentX++){
-                    PosPixelBuffer = pixelNr * fieldsPerPixel;
-                    buffer[PosPixelBuffer] = selectedColors[currentTile][0]; // red
+                    buffer[PosPixelBuffer++] = selectedColors[currentTile][0]; // red
                     buffer[PosPixelBuffer++] = selectedColors[currentTile][1]; // green
                     buffer[PosPixelBuffer++] = selectedColors[currentTile][2]; // blue
                     buffer[PosPixelBuffer++] = 0xFF; // alpha
-                    pixelNr++;
                 }
                 currentTile++;
             }
@@ -77,20 +93,20 @@ randomJPEG.encodeImage = function ( buffer, width, height, quality) {
 };
 
 
-randomJPEG.drawJPEG = function( colors, width, height, nrOfColumns, nrOfRows, quality ) {
-    var extColors = generateExtendedColorArray( colors, nrOfColumns * nrOfRows);
+randomJPEG.drawJPEG = function( colors, width, height, nrOfColumns, nrOfRows, sameColorFollowAllow, quality ) {
+    var extColors = generateExtendedColorArray( colors, nrOfColumns, nrOfRows, sameColorFollowAllow);
     var xs = generateDimArray(width, nrOfColumns);
     var ys = generateDimArray(height, nrOfRows);
 
-    var buffer = randomJPEG.createBufferForJPEG( extColors, xs, ys);
+    var buffer = randomJPEG.createBuffer( extColors, xs, ys);
     return randomJPEG.encodeImage( buffer, width, height, quality);
 };
 
 
 
 
-randomJPEG.saveJPEG = function ( colors, width, height, nrOfColumns, nrOfRows, quality, destination, callback) {
-    var jpegdata = randomJPEG.drawJPEG( colors, width, height, nrOfColumns, nrOfRows, quality );
+randomJPEG.saveJPEG = function ( colors, width, height, nrOfColumns, nrOfRows,sameColorFollowAllow, quality, destination, callback) {
+    var jpegdata = randomJPEG.drawJPEG( colors, width, height, nrOfColumns, nrOfRows, sameColorFollowAllow, quality );
     var stream = fs.createWriteStream(destination);
     stream.on("open", function () {
         stream.write(jpegdata.data);

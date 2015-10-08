@@ -1,13 +1,17 @@
-# randomJpeg
-a random jpeg generator  
+# random-jpeg
+a random jpeg generator which generates jpegs with
+rectangular patterns.
 
-a small module which generates jpegs with rectangular patterns.
+## how to install
 
-## how to install 
+```
+npm install random-jpeg --save
+```
 
 
-## example 
-'''
-    var RandomJpeg = require('randomJpeg');
-'''
+## example
 
+```javascript
+var randomJpeg = require('randomJpeg');
+
+```

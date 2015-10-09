@@ -1,6 +1,6 @@
 {
   "name": "random-jpeg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A random JPEG generator which generates JPEGs with rectangular patterns.",
   "license": "MIT",
   "repository": "MonoMisch/random-jpeg",
@@ -12,7 +12,8 @@
     "node": ">=0.10.0"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "colors.json"
   ],
   "keywords": [
     "jpeg",

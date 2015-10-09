@@ -7,7 +7,7 @@ var fs = require('fs');
 // npm
 var jpeg = require('jpeg-js');
 
-var colors = require( path.join(__dirname, '/colors.json'));
+var colors = require('./colors.json');
 
 function randomJPEG () {
 

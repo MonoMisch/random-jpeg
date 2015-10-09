@@ -12,7 +12,7 @@ npm install random-jpeg --save
 ## example
 
 ```javascript
-var randomJpeg = require('randomJpeg');
+var randomJpeg = require('random-jpeg');
 
 // with options and callback
 var imageOptions = {

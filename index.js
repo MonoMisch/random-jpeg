@@ -7,7 +7,7 @@ var fs = require('fs');
 // npm
 var jpeg = require('jpeg-js');
 
-var colors = require( path.join(__dirname, "/colors.json"));
+var colors = require( path.join(__dirname, '/colors.json'));
 
 function randomJPEG () {
 
@@ -133,7 +133,7 @@ randomJPEG.drawJPEG = function( imageOptions ) {
 randomJPEG.writeJpeg = function ( destination, imageOptions, callback) {
     var jpegdata = randomJPEG.drawJPEG(imageOptions);
     var stream = fs.createWriteStream(destination);
-    stream.on("open", function () {
+    stream.on('open', function () {
         stream.write(jpegdata.data);
         stream.end();
         if(callback) {

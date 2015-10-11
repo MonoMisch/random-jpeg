@@ -7,7 +7,7 @@ var fs = require('fs');
 // npm
 var jpeg = require('jpeg-js');
 
-var colors = require('./colors.json');
+var colors = require( path.join(__dirname, "/colors.json"));
 
 function randomJPEG () {
 
@@ -40,7 +40,7 @@ function generateExtendedColorArray( imageOptions){
             colorArray.push( colors[o] );
         }
         // TODO same color could be chosen several times --> without imageOptions.colors
-        // TODO     allowSameColorTouch doesnt work correctly
+        // TODO allowSameColorTouch doesnt work correctly
         for( var j = 0; j < nrOfDefaultColors; j++){
             index = Math.floor( Math.random() * colorArray.length );
             imageOptions.colors[j] = colorArray[index];
@@ -130,10 +130,10 @@ randomJPEG.drawJPEG = function( imageOptions ) {
 };
 
 
-randomJPEG.writeJpeg = function ( destination, imageOptions, callback) {
+randomJPEG.writeJPEG = function ( destination, imageOptions, callback) {
     var jpegdata = randomJPEG.drawJPEG(imageOptions);
     var stream = fs.createWriteStream(destination);
-    stream.on('open', function () {
+    stream.on("open", function () {
         stream.write(jpegdata.data);
         stream.end();
         if(callback) {

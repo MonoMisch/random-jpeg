@@ -29,5 +29,7 @@
   "blueviolet": [138,43,226],
   "darkmagenta": [139,0,139],
   "hotpink": [255,105,180],
-  "lightgray": [211,211,211]
+  "lightgray": [211,211,211],
+  "orangered": [255,69,0],
+  "gold": [255,215,0]
 }

@@ -33,3 +33,6 @@ node_modules
 /test/*
 !/test/.gitkeep
 
+#vim temp
+*.swp
+

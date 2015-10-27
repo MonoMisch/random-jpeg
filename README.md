@@ -28,10 +28,10 @@ var imageOptions = {
     allowSameColorTouch: false,
     quality: 100
 };
-randomJpeg.writeJpeg(destination, imageOptions, callback);
+randomJpeg.writeJPEG(destination, imageOptions, callback);
 
 // without any options or callback
-randomJpeg.writeJpeg(destination);
+randomJpeg.writeJPEG(destination);
 ```
 
 
@@ -45,7 +45,7 @@ two of them are using the **imageOptions**-object:
 **writeJPEG(destination, [imageOptions], [callback]){ writes Filestream};**
 
 **createBuffer([colorArray], [XPosArray], [YPosArray]){... return node-buffer;};**  
-The length of the colorArray has to be (XPosArray.length - 1 * YPosArray.length - 1)
+The length of the colorArray has to be (XPosArray.length - 1 * YPosArray.length - 1) 
 
 
 ## imageOptions

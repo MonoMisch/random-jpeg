@@ -40,7 +40,7 @@ function generateExtendedColorArray( imageOptions){
             colorArray.push( colors[o] );
         }
         // TODO same color could be chosen several times --> without imageOptions.colors
-        // TODO allowSameColorTouch doesnt work correctly
+        // TODO allowSameColorTouch doesn't work correctly
         for( var j = 0; j < nrOfDefaultColors; j++){
             index = Math.floor( Math.random() * colorArray.length );
             imageOptions.colors[j] = colorArray[index];

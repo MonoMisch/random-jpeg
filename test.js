@@ -1,7 +1,7 @@
 "use strict";
-var randomJpeg = require( './index');
-var colors = require('./colors.json');
-
+var randomJpeg = require( "./index");
+var colors = require("./colors.json");
+var _ = require("lodash");
 
 var colorArray1  = [];
 for( var o in colors){
@@ -19,17 +19,19 @@ var imageOptions = {
     allowSameColorTouch: false,
     quality: 100
 };
-randomJpeg.writeJPEG( __dirname + "/test/out_0.jpeg", imageOptions, function(err){
+randomJpeg.writeJPEGSync( __dirname + "/test/out_0.jpeg", imageOptions, function(err){
     if(err) { console.error( "error test1: " + err ); }
 });
+console.log( randomJpeg.colors);
 
+console.log(_.values(randomJpeg.colors));
 
 var imageOptions1 = {
-  colors: colorArray4,
-    width: 600,
-    height: 50,
-    columns: 7,
-    rows: 3,
+    colors: _.values(randomJpeg.colors),
+    width: 1200,
+    height: 800,
+    columns: 8,
+    rows: 6,
     allowSameColorTouch: false,
     quality: 100
 };

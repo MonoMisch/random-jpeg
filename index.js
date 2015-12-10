@@ -6,6 +6,8 @@ var fs = require('fs');
 
 // npm
 var jpeg = require('jpeg-js');
+var _ = require("lodash");
+
 
 var colors = require( path.join(__dirname, "/colors.json"));
 
@@ -35,10 +37,8 @@ function generateExtendedColorArray( imageOptions){
     if( imageOptions.colors === undefined){
         var nrOfDefaultColors = 6;
         imageOptions.colors = new Array( nrOfDefaultColors );
-        var colorArray  = [];
-        for( var o in colors){
-            colorArray.push( colors[o] );
-        }
+
+        var colorArray = _.values(colors);
         // TODO same color could be chosen several times --> without imageOptions.colors
         // TODO allowSameColorTouch doesn't work correctly
         for( var j = 0; j < nrOfDefaultColors; j++){
@@ -69,6 +69,8 @@ function generateExtendedColorArray( imageOptions){
     return extColors;
 }
 
+
+randomJPEG.colors = colors;
 
 randomJPEG.createBuffer = function( selectedColors, xs, ys ) {
     var width = xs[xs.length - 1];
@@ -132,20 +134,26 @@ randomJPEG.drawJPEG = function( imageOptions ) {
 
 randomJPEG.writeJPEG = function ( destination, imageOptions, callback) {
     var jpegdata = randomJPEG.drawJPEG(imageOptions);
-    var stream = fs.createWriteStream(destination);
-    stream.on("open", function () {
-        stream.write(jpegdata.data);
-        stream.end();
-        if(callback) {
-            callback(null)
-        }
-    });
-    stream.on('error', function(error) {
-        if( callback){
-            callback(error);
-        }
+    //var stream = fs.createWriteStream(destination);
+    //stream.on("open", function () {
+    //    stream.write(jpegdata.data);
+    //    stream.end();
+    //    if(callback) {
+    //        callback(null)
+    //    }
+    //});
+    //stream.on('error', function(error) {
+    //    if( callback){
+    //        callback(error);
+    //    }
+    //
+    //});
+    fs.writeFile(destination, jpegdata.data, callback);
+};
 
-    });
+randomJPEG.writeJPEGSync = function(destination, imageOptions){
+    var jpegdata = randomJPEG.drawJPEG(imageOptions);
+    fs.writeFileSync(destination, jpegdata.data);
 };
 
 

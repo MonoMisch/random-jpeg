@@ -19,20 +19,21 @@ function compareNumbers(a, b) {
     return a - b;
 }
 
-function generateDimArray( dimlenght, nrOfTilesInDim ) {
+function generateDimArray( dimlenght, nrOfTilesInDim, rng ) {
     var result = [0];
     result.push( dimlenght);
     for( var i = 0; i < nrOfTilesInDim -1; i++) {
-        result.push( Math.floor( Math.random() * dimlenght ) );
+        result.push( Math.floor( rng() * dimlenght ) );
     }
     return result.sort(compareNumbers);
 }
 
 
-function generateExtendedColorArray( imageOptions){
+function generateExtendedColorArray( imageOptions ){
     var extColors = [];
     var nrOfTiles = imageOptions.columns * imageOptions.rows;
     var index;
+    var rng = imageOptions.rng || Math.random;
 
     if( imageOptions.colors === undefined){
         var nrOfDefaultColors = 6;
@@ -42,14 +43,14 @@ function generateExtendedColorArray( imageOptions){
         // TODO same color could be chosen several times --> without imageOptions.colors
         // TODO allowSameColorTouch doesn't work correctly
         for( var j = 0; j < nrOfDefaultColors; j++){
-            index = Math.floor( Math.random() * colorArray.length );
+            index = Math.floor( rng() * colorArray.length );
             imageOptions.colors[j] = colorArray[index];
         }
     }
 
     if( imageOptions.allowSameColorTouch ) {
         for( var i = 0; i < nrOfTiles; i++ ) {
-            index = Math.floor( Math.random() * imageOptions.colors.length );
+            index = Math.floor( rng() * imageOptions.colors.length );
             extColors.push( imageOptions.colors[index]);
         }
     }else{
@@ -58,7 +59,7 @@ function generateExtendedColorArray( imageOptions){
         var indicesTilesRowAbove = new Array(imageOptions.columns);
         while( extColors.length < nrOfTiles ){
             columnPos = extColors.length % imageOptions.columns;
-            index = Math.floor( Math.random() * imageOptions.colors.length );
+            index = Math.floor( rng() * imageOptions.colors.length );
             if( index != indexTileLeft && index != indicesTilesRowAbove[columnPos]) {
                 indexTileLeft = index;
                 indicesTilesRowAbove[columnPos] = index;
@@ -123,9 +124,9 @@ randomJPEG.drawJPEG = function( imageOptions ) {
     if( imageOptions.rows === undefined ){
         imageOptions.rows = 4;
     }
-    var extColors = generateExtendedColorArray( imageOptions);
-    var xs = generateDimArray(imageOptions.width, imageOptions.columns);
-    var ys = generateDimArray(imageOptions.height, imageOptions.rows);
+    var extColors = generateExtendedColorArray( imageOptions );
+    var xs = generateDimArray(imageOptions.width, imageOptions.columns, imageOptions.rng || Math.random);
+    var ys = generateDimArray(imageOptions.height, imageOptions.rows, imageOptions.rng || Math.random);
 
     var buffer = randomJPEG.createBuffer( extColors, xs, ys);
     return randomJPEG.encodeImage( buffer, imageOptions);
